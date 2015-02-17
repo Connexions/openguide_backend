@@ -55,15 +55,11 @@ WSGI_APPLICATION = 'openguide_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+#Overwrite in local_settings.py with correct database settings
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'openguide_backend',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': '127.0.0.1',
-       
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',        
     }
 }
 
