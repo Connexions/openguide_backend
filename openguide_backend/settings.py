@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
@@ -70,10 +69,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'openguide_backend.wsgi.application'
 
-
-
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
@@ -92,6 +87,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'filestore')
+IMAGE_DOCUMENT_ROOT = os.path.join(DOCUMENT_ROOT, 'images')
+MEDIA_URL = '/media/'
 
 
 try:
