@@ -6,8 +6,8 @@ fs_store = FileSystemStorage(location=settings.DOCUMENT_ROOT)
 fs_image_store = FileSystemStorage(location=settings.IMAGE_DOCUMENT_ROOT)
 
 class StoredFile(models.Model):
-    date_created = models.DateTimeField()
-    date_modified = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
