@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'file_storage',
     'rest_guide',
+    #'file_storage',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'openguide_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +70,23 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'openguide_backend.wsgi.application'
+
+
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'openguide_backend',
+        'USER': 'openguide',
+        'PASSWORD': 'openstax',
+        'HOST': '127.0.0.1',
+       
+    }
+}
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
