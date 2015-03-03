@@ -48,10 +48,11 @@ class ElementAttributeType(models.Model):
       
   
 class ElementAttributes(models.Model):
-  element = models.ForeignKey(Element)
+  element = models.ForeignKey(Element, related_name='element_attributes')
   attribute_type = models.ForeignKey(ElementAttributeType)
   data = models.TextField('attribute data')
   
+  
   def __str__(self):
-    return self.data
+    return '%s: %s' % (self.attribute_type, self.data)
     
