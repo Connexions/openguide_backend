@@ -29,7 +29,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+<<<<<<< HEAD
 INSTALLED_APPS = (
+=======
+INSTALLED_APPS = [
+    'file_storage',
+>>>>>>> Added views for uploads, added thumbnail generation
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,10 +56,43 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+<<<<<<< HEAD
 )
 
 ROOT_URLCONF = 'openguide_backend.urls'
 
+=======
+]
+
+ROOT_URLCONF = 'openguide_backend.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_DIRS = ( os.path.join(BASE_DIR, 'templates/'), )
+
+# Store messages in the request's session.
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+
+>>>>>>> Added views for uploads, added thumbnail generation
 WSGI_APPLICATION = 'openguide_backend.wsgi.application'
 
 
@@ -102,7 +140,13 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'filestore')
 IMAGE_DOCUMENT_ROOT = os.path.join(DOCUMENT_ROOT, 'images')
+<<<<<<< HEAD
 
+=======
+MEDIA_URL = '/media/'
+DOCUMENT_MEDIA_URL = MEDIA_URL + 'filestore/'
+IMAGE_MEDIA_URL = DOCUMENT_MEDIA_URL + 'images/'
+>>>>>>> Added views for uploads, added thumbnail generation
 
 
 try:
