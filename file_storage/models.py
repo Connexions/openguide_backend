@@ -1,17 +1,27 @@
 from django.conf import settings
 from django.db import models
 from django.core.files.storage import FileSystemStorage
+import os
 
 fs_store = FileSystemStorage(location=settings.DOCUMENT_ROOT)
-fs_image_store = FileSystemStorage(location=settings.IMAGE_DOCUMENT_ROOT)
+fs_image_store = FileSystemStorage(location=settings.IMAGE_DOCUMENT_ROOT, base_url=settings.IMAGE_MEDIA_URL)
 
 class StoredFile(models.Model):
-    file = models.FileField(storage=fs_store)
-    date_uploaded = models.DateTimeField()
-    date_modified = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
 
+class BinaryFile(StoredFile):
+    file = models.FileField(storage=fs_store)
+
 class ImageFile(StoredFile):
     file = models.ImageField(storage=fs_image_store)
+
+    def _thumbnail_url(self):
+        filename, ext = os.path.splitext(self.file.name)
+        new_file_path = settings.IMAGE_MEDIA_URL + filename[2:] + "_thumbnail.png"
+
+        return new_file_path
+    thumbnail_url = property(_thumbnail_url)
