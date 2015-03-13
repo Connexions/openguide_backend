@@ -29,12 +29,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-<<<<<<< HEAD
 INSTALLED_APPS = (
-=======
-INSTALLED_APPS = [
-    'file_storage',
->>>>>>> master
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,11 +51,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-<<<<<<< HEAD
 )
-=======
-]
->>>>>>> master
 
 ROOT_URLCONF = 'openguide_backend.urls'
 
@@ -85,15 +76,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
-<<<<<<< HEAD
-=======
-
-TEMPLATE_DIRS = ( os.path.join(BASE_DIR, 'templates/'), )
-
-# Store messages in the request's session.
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
->>>>>>> master
 
 TEMPLATE_DIRS = ( os.path.join(BASE_DIR, 'templates/'), )
 
