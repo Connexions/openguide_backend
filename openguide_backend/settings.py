@@ -29,12 +29,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-<<<<<<< HEAD
 INSTALLED_APPS = (
-=======
-INSTALLED_APPS = [
-    'file_storage',
->>>>>>> Added views for uploads, added thumbnail generation
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +39,7 @@ INSTALLED_APPS = [
     'rest_guide',
     'rest_framework',
     'corsheaders',
-    #'file_storage',
+    'file_storage'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,15 +51,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-<<<<<<< HEAD
 )
 
 ROOT_URLCONF = 'openguide_backend.urls'
 
-=======
-]
-
-ROOT_URLCONF = 'openguide_backend.urls'
+WSGI_APPLICATION = 'openguide_backend.wsgi.application'
 
 TEMPLATES = [
     {
@@ -92,8 +83,6 @@ TEMPLATE_DIRS = ( os.path.join(BASE_DIR, 'templates/'), )
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
->>>>>>> Added views for uploads, added thumbnail generation
-WSGI_APPLICATION = 'openguide_backend.wsgi.application'
 
 
 # Database
@@ -135,23 +124,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'filestore')
 IMAGE_DOCUMENT_ROOT = os.path.join(DOCUMENT_ROOT, 'images')
-<<<<<<< HEAD
-
-=======
 MEDIA_URL = '/media/'
 DOCUMENT_MEDIA_URL = MEDIA_URL + 'filestore/'
 IMAGE_MEDIA_URL = DOCUMENT_MEDIA_URL + 'images/'
->>>>>>> Added views for uploads, added thumbnail generation
 
 
 try:
     from local_settings import *
 except ImportError:
     pass
-
-
