@@ -48,7 +48,7 @@ class ElementAttributeType(models.Model):
       
   
 class ElementAttributes(models.Model):
-  element = models.ForeignKey(Element, related_name='element_attributes')
+  element = models.ForeignKey(Element, related_name='attributes')
   attribute_type = models.ForeignKey(ElementAttributeType)
   data = models.TextField('attribute data')
   

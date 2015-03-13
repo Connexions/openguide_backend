@@ -72,13 +72,10 @@ DATABASES = {
     }
 }
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': [
-#       'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-#       'rest_framework.permissions.IsAdminUser',
-#       ],
-#     'PAGINATE_BY': 10
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',),
+    'PAGINATE_BY': 10
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
