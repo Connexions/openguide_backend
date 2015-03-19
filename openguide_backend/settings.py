@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -39,7 +40,8 @@ INSTALLED_APPS = (
     'rest_guide',
     'rest_framework',
     'corsheaders',
-    'file_storage'
+    'file_storage',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -77,7 +79,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-TEMPLATE_DIRS = ( os.path.join(BASE_DIR, 'templates/'), )
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'),]
 
 # Store messages in the request's session.
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

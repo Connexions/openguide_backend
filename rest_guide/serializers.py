@@ -5,6 +5,7 @@
 from django.contrib.auth.models import User, Group
 from .models import *
 from rest_framework import serializers
+from file_storage.models import *
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -46,25 +47,34 @@ class BookPartSerializer(serializers.HyperlinkedModelSerializer):
       'section',
     )
     
-class ElementAttributeTypeSerializer(serializers.HyperlinkedModelSerializer):
+class FileStorageSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
-    model = ElementAttributeType
+    model = ImageFile
     fields = (
-      'label',
+      'date_created',
+      'date_modified',
+      'file',
     )
+    
+#class ElementAttributeTypeSerializer(serializers.HyperlinkedModelSerializer):
+#  class Meta:
+#    model = ElementAttributeType
+#    fields = (
+#      'label',
+#    )
 
 
-class ElementAttributesSerializer(serializers.HyperlinkedModelSerializer):
+class ElementAttributeSerializer(serializers.HyperlinkedModelSerializer):
   #attribute_type = ElementAttributeTypeSerializer()
-  attribute_type = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='label'
-    )
+#  attribute_type = serializers.SlugRelatedField(
+#        read_only=True,
+#        slug_field='label'
+#    )
   class Meta:
-    model = ElementAttributes
+    model = ElementAttribute
     fields = (
-      'attribute_type',
-      'data',
+      'element',
+      'label',
       )
    
 
@@ -75,7 +85,8 @@ class ElementSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         slug_field='section'
     )
-  attributes = ElementAttributesSerializer(many=True, required=False)
+  #file = FileStorageSerializer(many=True, required=False)
+  #attributes = ElementAttributesSerializer(many=True, required=False)
   class Meta:
     model = Element 
     fields = (
@@ -85,7 +96,8 @@ class ElementSerializer(serializers.HyperlinkedModelSerializer):
       'pub_date',
       'mod_date',
       'book_part',
-      'attributes',
+      #'attributes',
+      #'imgSrc'
       )
     extra_kwargs = {
             #'url': {'view_name': 'accounts', 'lookup_field': 'account_name'}

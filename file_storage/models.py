@@ -18,6 +18,9 @@ class BinaryFile(StoredFile):
 
 class ImageFile(StoredFile):
     file = models.ImageField(storage=fs_image_store)
+    
+    def __str__(self):
+      return '%s' % (self.file)
 
     def _thumbnail_url(self):
         filename, ext = os.path.splitext(self.file.name)
@@ -25,3 +28,9 @@ class ImageFile(StoredFile):
 
         return new_file_path
     thumbnail_url = property(_thumbnail_url)
+  
+    def admin_thumbnail(self):
+       
+        return u'<img src="%s" />' % (self.thumbnail_url)
+    admin_thumbnail.short_description = 'Thumbnail'
+    admin_thumbnail.allow_tags = True
