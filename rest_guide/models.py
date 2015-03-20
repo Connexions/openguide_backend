@@ -47,7 +47,6 @@ class ElementAttribute(PolymorphicModel):
   
   def __str__(self):
     return '%s' % (self.label)
-    #return '%s: %s' % (self.attribute_type, self.data)
   
   
 class ElementImageAttribute(ElementAttribute):
@@ -61,4 +60,18 @@ class ElementTextAttribute(ElementAttribute):
   
   def __str__(self):
     return self.text
-    
+
+class ElementAttributeLabelType(models.Model):
+  IMAGE = 'IMG'
+  TEXT = 'TXT'
+  LABEL_TYPE_CHOICES = (
+    (IMAGE, 'Image'),
+    (TEXT, 'Text'),
+  )
+  label = models.CharField(max_length=25, unique=True)
+  label_type = models.CharField(max_length=3, choices=LABEL_TYPE_CHOICES, default=TEXT) 
+  
+  def __str__(self):
+    return self.label
+  
+  

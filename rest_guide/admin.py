@@ -5,23 +5,11 @@ from .models import *
 from file_storage.models import *
 
 # Register your models here.
-
-TEXT_ATTRIBUTE_LABELS = (
-  ('Font', 'Font'),
-  ('Color', 'Color')
-)
-
-IMAGE_ATTRIBUTE_LABELS = (
-  ('PDF', 'PDF'),
-  ('Web', 'Web')
-)
-
-
 class ElementTextAttributeForm(forms.ModelForm):
-  label = forms.ChoiceField(widget=forms.Select, choices=TEXT_ATTRIBUTE_LABELS)
-
+  label = forms.ModelChoiceField(queryset=ElementAttributeLabelType.objects.filter(label_type='TXT'), to_field_name="label", empty_label=None)
+  
 class ElementImageAttributeForm(forms.ModelForm):
-  label = forms.ChoiceField(widget=forms.Select, choices=IMAGE_ATTRIBUTE_LABELS)  
+  label = forms.ModelChoiceField(queryset=ElementAttributeLabelType.objects.filter(label_type='IMG'), to_field_name="label", empty_label=None)
   
 class ElementAttributeChildAdmin(PolymorphicChildModelAdmin):
   base_model = ElementAttribute
@@ -61,9 +49,11 @@ class ElementAdmin(admin.ModelAdmin):
   list_filter = ['pub_date']
   search_fields = ['name']
 
+  
 admin.site.register(ElementAttribute, ElementAttributeParentAdmin)
 admin.site.register(Element, ElementAdmin)
 admin.site.register(Book)
 admin.site.register(BookPart)
 admin.site.register(Theme)
+admin.site.register(ElementAttributeLabelType)
 
