@@ -39,4 +39,32 @@ class ElementViewSet(viewsets.ModelViewSet):
     queryset = Element.objects.all()
     serializer_class = ElementSerializer
 
+#class ElementAttributeViewSet(viewsets.ModelViewSet):
+#    """
+#    API endpoint that allows elements to be viewed or edited
+#    """
+#    queryset = ElementAttribute.objects.all()
+#    serializer_class = ElementAttributeSerializer
+    
+class ElementImageAttributeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows elements to be viewed or edited
+    """
+    queryset = ElementImageAttribute.objects.all()
+    serializer_class = ElementImageAttributeSerializer
+    
+class ElementTextAttributeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows elements to be viewed or edited
+    """
+    queryset = ElementTextAttribute.objects.all()
+    serializer_class = ElementTextAttributeSerializer
+    
+class ImageFileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows elements to be viewed or edited
+    """
+    queryset = ImageFile.objects.all()
+    serializer_class = ImageFileSerializer
+   
 

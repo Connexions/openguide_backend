@@ -50,16 +50,16 @@ class ElementAttribute(PolymorphicModel):
   
   
 class ElementImageAttribute(ElementAttribute):
-  image = models.ForeignKey('file_storage.ImageFile', blank=True, null=True)
+  image = models.ForeignKey(ImageFile, blank=True, null=True)
   
   def __str__(self):
-    return '%s' % (self.image)
+    return '%s: %s' % (self.label, self.image)
   
 class ElementTextAttribute(ElementAttribute):
   text = models.TextField()
   
   def __str__(self):
-    return self.text
+    return '%s: %s' % (self.label, self.text)
 
 class ElementAttributeLabelType(models.Model):
   IMAGE = 'IMG'

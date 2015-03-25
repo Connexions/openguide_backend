@@ -1,7 +1,3 @@
-# from django.contrib.auth.models import User, Group 
-# from rest_framework import serializers
-# 
-
 from django.contrib.auth.models import User, Group
 from .models import *
 from rest_framework import serializers
@@ -47,46 +43,81 @@ class BookPartSerializer(serializers.HyperlinkedModelSerializer):
       'section',
     )
     
-class FileStorageSerializer(serializers.HyperlinkedModelSerializer):
+class ImageFileSerializer(serializers.HyperlinkedModelSerializer):
+  image = serializers.SerializerMethodField()
+  thumb = serializers.SerializerMethodField()
+  
+  def get_image(self, obj):
+        return obj.image.url
+    
+  def get_thumb(self, obj):
+        return obj.thumbnail_url
+  
   class Meta:
     model = ImageFile
     fields = (
+      'url',
       'date_created',
       'date_modified',
-      'file',
+      'image',
+      'thumb',
     )
     
-#class ElementAttributeTypeSerializer(serializers.HyperlinkedModelSerializer):
-#  class Meta:
-#    model = ElementAttributeType
-#    fields = (
-#      'label',
-#    )
-
-
-class ElementAttributeSerializer(serializers.HyperlinkedModelSerializer):
-  #attribute_type = ElementAttributeTypeSerializer()
-#  attribute_type = serializers.SlugRelatedField(
-#        read_only=True,
-#        slug_field='label'
-#    )
+class ElementAttributeLabelTypeSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
-    model = ElementAttribute
+    model = ElementAttributeLabelType
     fields = (
-      'element',
       'label',
-      )
-   
+      'label_type',
+    )
+
+class ElementImageAttributeSerializer(serializers.HyperlinkedModelSerializer):
+  image = serializers.StringRelatedField()
+  thumb = serializers.SerializerMethodField()
+  
+  def get_thumb(self, obj):
+        return obj.image.thumbnail_url
+  
+  class Meta:
+    model = ElementImageAttribute
+    fields = (
+      'label',
+      'image',
+      'thumb',
+    )
+
+class ElementTextAttributeSerializer(serializers.HyperlinkedModelSerializer):
+  class Meta:
+    model = ElementTextAttribute
+    fields = (
+      'label',
+      'text',
+    )
+
+class ElementAttributeHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):
+  def to_representation(self, value):
+        
+        if isinstance(value, ElementImageAttribute):
+            serializer = ElementImageAttributeSerializer(value, context=self.context)
+        elif isinstance(value, ElementTextAttribute):
+            serializer = ElementTextAttributeSerializer(value, context=self.context)
+        else:
+            raise Exception('Unexpected type of element attribute object')
+
+        return serializer.data
+  
 
 class ElementSerializer(serializers.HyperlinkedModelSerializer):
   book = BookSerializer()
-  #book_part = BookPartSerializer()
   book_part = serializers.SlugRelatedField(
         read_only=True,
         slug_field='section'
     )
-  #file = FileStorageSerializer(many=True, required=False)
-  #attributes = ElementAttributesSerializer(many=True, required=False)
+  attributes = ElementAttributeHyperlinkedRelatedField(
+               many=True,
+               read_only=True,
+               view_name='elementattribute-detail'  
+  )
   class Meta:
     model = Element 
     fields = (
@@ -96,12 +127,8 @@ class ElementSerializer(serializers.HyperlinkedModelSerializer):
       'pub_date',
       'mod_date',
       'book_part',
-      #'attributes',
-      #'imgSrc'
+      'attributes',
       )
-    extra_kwargs = {
-            #'url': {'view_name': 'accounts', 'lookup_field': 'account_name'}
-            #'book_part': {'lookup_field': 'section'}
-        }
+    
     
     

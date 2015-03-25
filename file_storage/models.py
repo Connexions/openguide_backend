@@ -22,7 +22,8 @@ class ImageFile(StoredFile):
     image = models.ImageField(storage=fs_image_store)
     
     def __str__(self):
-      return '%s' % (self.image)
+      return '%s' % (self.image.url)
+    
 
     def _thumbnail_url(self):
         filename, ext = os.path.splitext(self.image.name)
