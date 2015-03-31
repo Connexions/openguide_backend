@@ -46,6 +46,7 @@ class ElementTextAttributeInline(admin.TabularInline):
 class ElementAdmin(admin.ModelAdmin):
   inlines = [ElementImageAttributeInline,ElementTextAttributeInline]
   list_display = ('name', 'book_part', 'book', 'pub_date', 'was_published_recently')
+  exclude = ('mod_date','pub_date')
   list_filter = ['pub_date']
   search_fields = ['name']
 

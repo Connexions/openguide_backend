@@ -10,6 +10,8 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'username'
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -24,6 +26,8 @@ class ThemeViewSet(viewsets.ModelViewSet):
     """
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
+    lookup_field = 'title'
+
     
 class BookViewSet(viewsets.ModelViewSet):
     """
@@ -31,20 +35,14 @@ class BookViewSet(viewsets.ModelViewSet):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-
+    lookup_field = 'title'
+    
 class ElementViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows elements to be viewed or edited
     """
     queryset = Element.objects.all()
     serializer_class = ElementSerializer
-
-#class ElementAttributeViewSet(viewsets.ModelViewSet):
-#    """
-#    API endpoint that allows elements to be viewed or edited
-#    """
-#    queryset = ElementAttribute.objects.all()
-#    serializer_class = ElementAttributeSerializer
     
 class ElementImageAttributeViewSet(viewsets.ModelViewSet):
     """
@@ -67,4 +65,9 @@ class ImageFileViewSet(viewsets.ModelViewSet):
     queryset = ImageFile.objects.all()
     serializer_class = ImageFileSerializer
    
-
+class ElementAttributeLabelTypeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows elements label types to be viewed or edited
+    """
+    queryset = ElementAttributeLabelType.objects.all()
+    serializer_class = ElementAttributeLabelTypeSerializer

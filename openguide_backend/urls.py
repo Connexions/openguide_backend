@@ -10,8 +10,8 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'themes', views.ThemeViewSet)
 router.register(r'books', views.BookViewSet)
+router.register(r'labels', views.ElementAttributeLabelTypeViewSet)
 router.register(r'elements', views.ElementViewSet)
-#router.register(r'attributes', views.ElementAttributeViewSet)
 router.register(r'images', views.ImageFileViewSet)
 
 
