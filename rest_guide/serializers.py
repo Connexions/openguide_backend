@@ -36,9 +36,8 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
   elements = serializers.SerializerMethodField()
   
   def get_elements(self, obj):
-    
-    book_elements = Element.objects.filter(book__pk=obj.id)
-    elements = Element.objects.filter( (Q(book__pk=obj.id) | Q(theme__pk=obj.theme_id)), ~Q(pk__in = [o.element_id for o in book_elements if o.element_id]))
+    elements = Element.objects.filter((Q(book__pk=obj.id) | Q(theme__pk=obj.theme_id)),
+    ~Q(pk__in = Element.objects.filter(book__pk=obj.id, element__isnull=False).values_list('element', flat=True)))
     serializer = GetElementSerializer(elements, context=self.context, many=True)
     element_urls=[]
     for element in serializer.data:

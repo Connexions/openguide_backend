@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from .models import *
 from rest_framework import viewsets
 from .serializers import *
+import django_filters
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -27,6 +29,8 @@ class ThemeViewSet(viewsets.ModelViewSet):
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
     lookup_field = 'title'
+    filter_fields = ('title','elements__name',)
+    ordering_fields = ('title',)
 
     
 class BookViewSet(viewsets.ModelViewSet):
@@ -36,6 +40,8 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     lookup_field = 'title'
+    filter_fields = ('title','elements__name')
+    ordering_fields = ('title', 'theme__title', 'elements__name')
     
 class ElementViewSet(viewsets.ModelViewSet):
     """
@@ -43,6 +49,9 @@ class ElementViewSet(viewsets.ModelViewSet):
     """
     queryset = Element.objects.all()
     serializer_class = ElementSerializer
+    filter_fields = ('name','book__title', 'theme__title',)
+    ordering_fields = ('name', 'theme__title', 'book__title',)
+
     
 class ElementImageAttributeViewSet(viewsets.ModelViewSet):
     """
