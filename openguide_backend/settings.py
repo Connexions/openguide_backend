@@ -32,14 +32,17 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'rest_guide',
     'rest_framework',
     'corsheaders',
-    'file_storage'
+    'file_storage',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -77,7 +80,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-TEMPLATE_DIRS = ( os.path.join(BASE_DIR, 'templates/'), )
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'),]
 
 # Store messages in the request's session.
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
@@ -101,7 +104,11 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',),
-    'PAGINATE_BY': 10
+    'PAGINATE_BY': 10,                 # Default to 10
+    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
+    'MAX_PAGINATE_BY': 100,             # Maximum limit allowed when using `?page_size=xxx`.
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend','rest_framework.filters.OrderingFilter','rest_guide.filters.CoalesceFilterBackend',),
+
 }
 
 CORS_ORIGIN_ALLOW_ALL = True

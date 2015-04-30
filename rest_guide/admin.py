@@ -1,21 +1,60 @@
+from django import forms
 from django.contrib import admin
-from .models import Element, Book, Theme, ElementAttributes, ElementAttributeType, BookPart
+from polymorphic.admin import PolymorphicParentModelAdmin, PolymorphicChildModelAdmin
+from .models import *
+from file_storage.models import *
 
 # Register your models here.
-class ElementAttributesInline(admin.TabularInline):
-  model = ElementAttributes
-  extra = 5
+class ElementTextAttributeForm(forms.ModelForm):
+  label = forms.ModelChoiceField(queryset=ElementAttributeLabelType.objects.filter(label_type='TXT'), to_field_name="label", empty_label=None)
   
+class ElementImageAttributeForm(forms.ModelForm):
+  label = forms.ModelChoiceField(queryset=ElementAttributeLabelType.objects.filter(label_type='IMG'), to_field_name="label", empty_label=None)
+  
+class ElementAttributeChildAdmin(PolymorphicChildModelAdmin):
+  base_model = ElementAttribute
+  
+  
+class ElementImageAttributeAdmin(ElementAttributeChildAdmin):
+  form = ElementImageAttributeForm
+
+class ElementTextAttributeAdmin(ElementAttributeChildAdmin):
+  form = ElementTextAttributeForm
+
+class ElementAttributeParentAdmin(PolymorphicParentModelAdmin):
+  base_model = ElementAttribute
+  child_models = (
+    (ElementImageAttribute, ElementImageAttributeAdmin),
+    (ElementTextAttribute, ElementTextAttributeAdmin), 
+  )
+  
+class ElementImageAttributeInline(admin.TabularInline):
+  model = ElementImageAttribute
+  form = ElementImageAttributeForm
+  fk_name = 'element'
+  readonly_fields = ['elementattribute_ptr']
+  extra = 0
+
+  
+class ElementTextAttributeInline(admin.TabularInline):
+  model = ElementTextAttribute
+  form = ElementTextAttributeForm
+  fk_name = 'element'
+  readonly_fields = ['elementattribute_ptr']
+  extra = 0
+
 class ElementAdmin(admin.ModelAdmin):
-  inlines = [ElementAttributesInline]
+  inlines = [ElementImageAttributeInline,ElementTextAttributeInline]
   list_display = ('name', 'book_part', 'book', 'pub_date', 'was_published_recently')
+  exclude = ('mod_date','pub_date')
   list_filter = ['pub_date']
   search_fields = ['name']
 
-
+  
+admin.site.register(ElementAttribute, ElementAttributeParentAdmin)
 admin.site.register(Element, ElementAdmin)
 admin.site.register(Book)
 admin.site.register(BookPart)
 admin.site.register(Theme)
-admin.site.register(ElementAttributeType)
+admin.site.register(ElementAttributeLabelType)
 
