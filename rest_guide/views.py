@@ -28,7 +28,6 @@ class ThemeViewSet(viewsets.ModelViewSet):
     """
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
-    lookup_field = 'title'
     filter_fields = ('title','elements__name',)
     ordering_fields = ('title',)
 
@@ -39,7 +38,6 @@ class BookViewSet(viewsets.ModelViewSet):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    lookup_field = 'title'
     filter_fields = ('title','elements__name')
     ordering_fields = ('title', 'theme__title', 'elements__name')
     

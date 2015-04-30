@@ -4,7 +4,7 @@ from .models import *
 from rest_framework import serializers
 from file_storage.models import *
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields = ('url', 'username', 'email', 'groups')
@@ -12,99 +12,62 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'url': {'lookup_field': 'username'},     
     }
     
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class GroupSerializer(serializers.ModelSerializer):
   class Meta:
     model = Group 
     fields = ('url', 'name')
 
-class GetElementSerializer(serializers.HyperlinkedModelSerializer):
+class GetElementSerializer(serializers.ModelSerializer):
   class Meta:
     model = Element 
-    fields = (
-      'url',
-    )
+    depth=1
     
-#    from pprint import pformat
-#    import logging
-#    logging.root.setLevel(logging.DEBUG)
-#    logging.debug(pformat(theme_elements))
-#    logging.debug(pformat(theme_elements))   
-    
-
-    
-class BookSerializer(serializers.HyperlinkedModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
   elements = serializers.SerializerMethodField()
   
   def get_elements(self, obj):
     elements = Element.objects.filter((Q(book__pk=obj.id) | Q(theme__pk=obj.theme_id)),
     ~Q(pk__in = Element.objects.filter(book__pk=obj.id, element__isnull=False).values_list('element', flat=True)))
     serializer = GetElementSerializer(elements, context=self.context, many=True)
-    element_urls=[]
-    for element in serializer.data:
-      element_urls.append(element['url'])
-    return element_urls
+    return serializer.data
   class Meta:
     model = Book
     fields = (
+      'id',
       'title',
       'url',
       'theme',
       'elements',
     )
     read_only_fields = ('elements',)
-    extra_kwargs = {
-            'url': {'lookup_field': 'title'},
-            'theme': {'lookup_field': 'title'},
-            #'elements':{'lookup_field': 'name'}
-        }
+    depth=1
+
     
-class ThemeBookSerializer(serializers.HyperlinkedModelSerializer):
-#  elements = serializers.HyperlinkedRelatedField(
-#      many=True,
-#      read_only=True,
-#      view_name='element-detail'
-#  )
-  class Meta:
-    model = Book
-    fields = (
-      'title',
-      'url',
-      'elements',
-    )
-    read_only_fields = ('elements',)
-    extra_kwargs = {
-            'url': {'lookup_field': 'title'},
-            'theme': {'lookup_field': 'title'},
-            #'elements':{'lookup_field': 'name'}
-        }    
     
 
-class ThemeSerializer(serializers.HyperlinkedModelSerializer):
-  #books = ThemeBookSerializer(many=True)
+class ThemeSerializer(serializers.ModelSerializer):
   class Meta:
     model = Theme
     fields = (
+      'id',
       'title',
       'url',
       'books',
       'elements',
     )
     read_only_fields = ('books',)
-    extra_kwargs = {
-            'url': {'lookup_field': 'title'},
-            'books': {'lookup_field': 'title'},
-        }
-
+    depth=2
 
     
-class BookPartSerializer(serializers.HyperlinkedModelSerializer):
+class BookPartSerializer(serializers.ModelSerializer):
   class Meta:
     model = BookPart
     fields = (
+      'id',
       'section',
     )
     
-class ImageFileSerializer(serializers.HyperlinkedModelSerializer):
+class ImageFileSerializer(serializers.ModelSerializer):
   image = serializers.SerializerMethodField()
   thumb = serializers.SerializerMethodField()
   
@@ -117,6 +80,7 @@ class ImageFileSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
     model = ImageFile
     fields = (
+      'id',
       'url',
       'date_created',
       'date_modified',
@@ -124,15 +88,11 @@ class ImageFileSerializer(serializers.HyperlinkedModelSerializer):
       'thumb',
     )
     
-class ElementAttributeLabelTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ElementAttributeLabelTypeSerializer(serializers.ModelSerializer):
   class Meta:
     model = ElementAttributeLabelType
-#    fields = (
-#      'label',
-#      'label_type',
-#    )
 
-class ElementImageAttributeSerializer(serializers.HyperlinkedModelSerializer):
+class ElementImageAttributeSerializer(serializers.ModelSerializer):
   image = serializers.StringRelatedField()
   thumb = serializers.SerializerMethodField()
   
@@ -147,7 +107,7 @@ class ElementImageAttributeSerializer(serializers.HyperlinkedModelSerializer):
       'thumb',
     )
 
-class ElementTextAttributeSerializer(serializers.HyperlinkedModelSerializer):
+class ElementTextAttributeSerializer(serializers.ModelSerializer):
   class Meta:
     model = ElementTextAttribute
     fields = (
@@ -155,7 +115,7 @@ class ElementTextAttributeSerializer(serializers.HyperlinkedModelSerializer):
       'text',
     )
 
-class ElementAttributeHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):
+class ElementAttributeRelatedField(serializers.RelatedField):
   def to_representation(self, value):
         
         if isinstance(value, ElementImageAttribute):
@@ -168,39 +128,32 @@ class ElementAttributeHyperlinkedRelatedField(serializers.HyperlinkedRelatedFiel
         return serializer.data
   
 
-class ElementSerializer(serializers.HyperlinkedModelSerializer):
-  #book = BookSerializer()
-  parent = serializers.HyperlinkedRelatedField(
+class ElementSerializer(serializers.ModelSerializer):
+  parent = serializers.PrimaryKeyRelatedField(
         source='element',
         read_only=True,
-        view_name='element-detail'
     )
   book_part = serializers.SlugRelatedField(
         read_only=True,
         slug_field='section'
     )
-  attributes = ElementAttributeHyperlinkedRelatedField(
+  attributes = ElementAttributeRelatedField(
                many=True,
                read_only=True,
-               view_name='elementattribute-detail'  
   )
   class Meta:
     model = Element 
     fields = (
+      'id',
       'name',
       'url',
       'book',
       'theme',
-      #'pub_date',
-      #'mod_date',
+      'pub_date',
+      'mod_date',
       'book_part',
       'parent',
       'attributes',
       )
-    extra_kwargs = {
-            #'url': {'lookup_field': 'name'},
-            'book': {'lookup_field': 'title'},
-            'theme': {'lookup_field': 'title'},
-        }
-    
+    depth=1
     
