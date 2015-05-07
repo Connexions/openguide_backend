@@ -45,18 +45,7 @@ class BookSerializer(serializers.ModelSerializer):
     
     
 
-class ThemeSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Theme
-    fields = (
-      'id',
-      'title',
-      'url',
-      'books',
-      'elements',
-    )
-    read_only_fields = ('books',)
-    depth=2
+
 
     
 class BookPartSerializer(serializers.ModelSerializer):
@@ -102,6 +91,7 @@ class ElementImageAttributeSerializer(serializers.ModelSerializer):
   class Meta:
     model = ElementImageAttribute
     fields = (
+      'id',
       'label',
       'image',
       'thumb',
@@ -111,6 +101,7 @@ class ElementTextAttributeSerializer(serializers.ModelSerializer):
   class Meta:
     model = ElementTextAttribute
     fields = (
+      'id',
       'label',
       'text',
     )
@@ -137,7 +128,7 @@ class ElementSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='section'
     )
-  attributes = ElementAttributeRelatedField(
+  element_attributes = ElementAttributeRelatedField(
                many=True,
                read_only=True,
   )
@@ -153,7 +144,21 @@ class ElementSerializer(serializers.ModelSerializer):
       'mod_date',
       'book_part',
       'parent',
-      'attributes',
+      'element_attributes',
       )
     depth=1
     
+class ThemeSerializer(serializers.ModelSerializer):
+  elements = ElementSerializer(many=True)
+  
+  class Meta:
+    model = Theme
+    fields = (
+      'id',
+      'title',
+      'url',
+      'books',
+      'elements',
+    )
+    read_only_fields = ('books',)
+    depth=2
