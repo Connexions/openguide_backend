@@ -28,7 +28,7 @@ class BookSerializer(serializers.ModelSerializer):
   def get_elements(self, obj):
     elements = Element.objects.filter((Q(book__pk=obj.id) | Q(theme__pk=obj.theme_id)),
     ~Q(pk__in = Element.objects.filter(book__pk=obj.id, element__isnull=False).values_list('element', flat=True)))
-    serializer = GetElementSerializer(elements, context=self.context, many=True)
+    serializer = ElementSerializer(elements, context=self.context, many=True)
     return serializer.data
   class Meta:
     model = Book
