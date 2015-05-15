@@ -17,8 +17,8 @@ router.register(r'images', views.ImageFileViewSet)
 
 
 urlpatterns = [
-    url(r'^v1/', include(router.urls)),
+    url(r'^data/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^files/', include('file_storage.urls')),
+    url(r'^data/admin/', include(admin.site.urls)),
+    url(r'^data/files/', include('file_storage.urls')),
 ]
