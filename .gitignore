@@ -60,5 +60,4 @@ docs/_build/
 target/
 
 #Static/Media Files
-static/
-media/
+media/filestore/images/*
