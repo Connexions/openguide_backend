@@ -44,7 +44,7 @@ class Element(models.Model):
 
 
 class ElementAttribute(PolymorphicModel):
-  element = models.ForeignKey(Element, related_name='attributes')
+  element = models.ForeignKey(Element, related_name='element_attributes')
   label = models.CharField(max_length=25)
   
   def __str__(self):
