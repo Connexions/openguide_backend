@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^data/admin/', include(admin.site.urls)),
     url(r'^data/files/', include('file_storage.urls')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^accounts/', include('allauth.urls')),
 ]
