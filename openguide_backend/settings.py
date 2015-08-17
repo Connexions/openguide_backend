@@ -44,16 +44,16 @@ INSTALLED_APPS = (
     'corsheaders',
     'file_storage',
     'debug_toolbar',
-    'rest_auth',
-    'django.contrib.sites',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
+    #'rest_auth',
+    #'django.contrib.sites',
+    #'rest_auth.registration',
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
+    #'allauth.socialaccount.providers.github',
 
 )
-SITE_ID = 1
+#SITE_ID = 1
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -71,7 +71,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+    #'allauth.account.auth_backends.AuthenticationBackend',
 
 )
 
@@ -80,16 +80,16 @@ ROOT_URLCONF = 'openguide_backend.urls'
 WSGI_APPLICATION = 'openguide_backend.wsgi.application'
 
 # For Django 1.7 and below, use:
-TEMPLATE_CONTEXT_PROCESSORS = (
-
-    # Required by `allauth` template tags
-    'django.core.context_processors.request',
-    'django.contrib.auth.context_processors.auth',
-    # `allauth` specific context processors
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-
-)
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#
+#     # Required by `allauth` template tags
+#     'django.core.context_processors.request',
+#     'django.contrib.auth.context_processors.auth',
+#     # `allauth` specific context processors
+#     'allauth.account.context_processors.account',
+#     'allauth.socialaccount.context_processors.socialaccount',
+#
+# )
 
 
 TEMPLATES = [
