@@ -7,24 +7,24 @@ from file_storage.models import *
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('url', 'username', 'email', 'groups')
-    extra_kwargs = {
-            'url': {'lookup_field': 'username'},     
-    }
-    
+    fields = ('id', 'url', 'username', 'email', 'groups')
+    # extra_kwargs = {
+    #         'url': {'lookup_field': 'username'},
+    # }
+
 class GroupSerializer(serializers.ModelSerializer):
   class Meta:
-    model = Group 
+    model = Group
     fields = ('url', 'name')
 
 class GetElementSerializer(serializers.ModelSerializer):
   class Meta:
-    model = Element 
+    model = Element
     depth=1
-    
+
 class BookSerializer(serializers.ModelSerializer):
   elements = serializers.SerializerMethodField()
-  
+
   def get_elements(self, obj):
     elements = Element.objects.filter((Q(book__pk=obj.id) | Q(theme__pk=obj.theme_id)),
     ~Q(pk__in = Element.objects.filter(book__pk=obj.id, element__isnull=False).values_list('element', flat=True)))
@@ -42,12 +42,12 @@ class BookSerializer(serializers.ModelSerializer):
     read_only_fields = ('elements',)
     depth=1
 
-    
-    
 
 
 
-    
+
+
+
 class BookPartSerializer(serializers.ModelSerializer):
   class Meta:
     model = BookPart
@@ -55,17 +55,17 @@ class BookPartSerializer(serializers.ModelSerializer):
       'id',
       'section',
     )
-    
+
 class ImageFileSerializer(serializers.ModelSerializer):
   image = serializers.SerializerMethodField()
   thumb = serializers.SerializerMethodField()
-  
+
   def get_image(self, obj):
         return obj.image.url
-    
+
   def get_thumb(self, obj):
         return obj.thumbnail_url
-  
+
   class Meta:
     model = ImageFile
     fields = (
@@ -76,7 +76,7 @@ class ImageFileSerializer(serializers.ModelSerializer):
       'image',
       'thumb',
     )
-    
+
 class ElementAttributeLabelTypeSerializer(serializers.ModelSerializer):
   class Meta:
     model = ElementAttributeLabelType
@@ -84,10 +84,10 @@ class ElementAttributeLabelTypeSerializer(serializers.ModelSerializer):
 class ElementImageAttributeSerializer(serializers.ModelSerializer):
   image = serializers.StringRelatedField()
   thumb = serializers.SerializerMethodField()
-  
+
   def get_thumb(self, obj):
         return obj.image.thumbnail_url
-  
+
   class Meta:
     model = ElementImageAttribute
     fields = (
@@ -108,7 +108,7 @@ class ElementTextAttributeSerializer(serializers.ModelSerializer):
 
 class ElementAttributeRelatedField(serializers.RelatedField):
   def to_representation(self, value):
-        
+
         if isinstance(value, ElementImageAttribute):
             serializer = ElementImageAttributeSerializer(value, context=self.context)
         elif isinstance(value, ElementTextAttribute):
@@ -117,7 +117,7 @@ class ElementAttributeRelatedField(serializers.RelatedField):
             raise Exception('Unexpected type of element attribute object')
 
         return serializer.data
-  
+
 
 class ElementSerializer(serializers.ModelSerializer):
   parent = serializers.PrimaryKeyRelatedField(
@@ -133,7 +133,7 @@ class ElementSerializer(serializers.ModelSerializer):
                read_only=True,
   )
   class Meta:
-    model = Element 
+    model = Element
     fields = (
       'id',
       'name',
@@ -147,10 +147,10 @@ class ElementSerializer(serializers.ModelSerializer):
       'element_attributes',
       )
     depth=1
-    
+
 class ThemeSerializer(serializers.ModelSerializer):
   elements = ElementSerializer(many=True)
-  
+
   class Meta:
     model = Theme
     fields = (

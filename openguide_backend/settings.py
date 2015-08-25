@@ -22,9 +22,9 @@ SECRET_KEY = '2pd%x(g-o^=ezv7^zgvjf9iixqqq5o8i_ahc29(a%o!@=09x&)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.openguide.dev','.cnx.org']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'file_storage',
     'debug_toolbar',
+    'rest_framework.authtoken',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,11 +99,15 @@ DATABASES = {
         'USER': 'openguide',
         'PASSWORD': 'openstax',
         'HOST': '127.0.0.1',
-       
+
     }
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # optional
+    ),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',),
     'PAGINATE_BY': 10,                 # Default to 10
     'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
@@ -131,7 +136,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "static"),
+#     '/static/',
+# )
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'filestore')
