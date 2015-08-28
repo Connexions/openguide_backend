@@ -12,7 +12,15 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'username'
+    #lookup_field = 'username'
+
+    def retreive(self, request, pk=None):
+        """
+        If provided 'pk' is "me" then return the current user.
+        """
+        if pk == 'me':
+            return Response(UserSerializer(request.user).data)
+        return super(UserViewSet, self).retreive(request, pk)
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -31,7 +39,7 @@ class ThemeViewSet(viewsets.ModelViewSet):
     filter_fields = ('title','elements__name',)
     ordering_fields = ('title',)
 
-    
+
 class BookViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows books to be viewed or edited
@@ -40,7 +48,7 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
     filter_fields = ('title','elements__name')
     ordering_fields = ('title', 'theme__title', 'elements__name')
-    
+
 class ElementViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows elements to be viewed or edited
@@ -50,28 +58,28 @@ class ElementViewSet(viewsets.ModelViewSet):
     filter_fields = ('name','book__title', 'theme__title',)
     ordering_fields = ('name', 'theme__title', 'book__title',)
 
-    
+
 class ElementImageAttributeViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows elements to be viewed or edited
     """
     queryset = ElementImageAttribute.objects.all()
     serializer_class = ElementImageAttributeSerializer
-    
+
 class ElementTextAttributeViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows elements to be viewed or edited
     """
     queryset = ElementTextAttribute.objects.all()
     serializer_class = ElementTextAttributeSerializer
-    
+
 class ImageFileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows elements to be viewed or edited
     """
     queryset = ImageFile.objects.all()
     serializer_class = ImageFileSerializer
-   
+
 class ElementAttributeLabelTypeViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows elements label types to be viewed or edited
